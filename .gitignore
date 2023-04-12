@@ -1,0 +1,68 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local env files
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+/info.php
+
+/dist
+
+.env
+
+/docker/docker_nginx/*
+!/docker/docker_nginx/.keep
+!/docker/docker_nginx/default_example.conf
+!/docker/docker_nginx/default_example_secure.conf
+!/docker/docker_nginx/sites-enabled/
+/docker/docker_nginx/sites-enabled/*
+!/docker/docker_nginx/sites-enabled/.keep
+!/docker/docker_nginx/certs/
+/docker/docker_dump/*
+!/docker/docker_dump/.keep
+
+/docker/docker_apache/*
+!/docker/docker_apache/.keep
+!/docker/docker_apache/default_apache.conf
+!/docker/docker_apache/httpd-vhosts.conf
+!/docker/docker_apache/conf/
+/docker/docker_apache/conf/*
+!/docker/docker_apache/conf/.keep
+
+/docker/docker_mysql/conf/*
+!/docker/docker_mysql/conf/.keep
+/docker/docker_mysql/data/*
+!/docker/docker_mysql/data/.keep
+!/docker/docker_mysql/.keep
+/data
