@@ -3,6 +3,7 @@ import { World } from "./World";
 import { Entity } from "./Entity";
 import { Camera } from "./Camera";
 import { Transform } from "./Transform";
+import {Shader, ShaderSemantic} from "./Graphics/Shader";
 
 var canvas : HTMLCanvasElement = document.querySelector("#c");
 const gl = canvas.getContext("webgl2") as WebGL2RenderingContext;
@@ -39,6 +40,7 @@ var mainCameraEntity : Entity = Entity.Create("MainCamera");
 var cameraTransform : Transform = mainCameraEntity.AddComponent<Transform>(Transform);
 cameraTransform.Position = vec3.fromValues(0,0,-10);
 mainCameraEntity.AddComponent<Camera>(Camera);
+console.log(cameraTransform.Rotation);
 
 
 

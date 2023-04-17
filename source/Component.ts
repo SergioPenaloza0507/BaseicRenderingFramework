@@ -7,7 +7,6 @@ export abstract class Component{
 
     constructor(entity : number){
         this.entity = entity;
-        this.Initialize();
     }
 
     public abstract Initialize() : void;

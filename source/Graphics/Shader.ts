@@ -1,4 +1,4 @@
-enum ShaderSemantic{
+export enum ShaderSemantic{
     BINORMAL = "a_BINORMAL",
     COLOR = "a_COLOR",
     NORMAL = "a_NORMAL",
@@ -8,8 +8,7 @@ enum ShaderSemantic{
     TEXCOORD = "a_TEXCOORD"
 }
 
-class Shader{
-
+export class Shader{
     shaderProgram : WebGLProgram;
     private geometryAttributes : {[name:string] : number};
 
@@ -63,4 +62,3 @@ class Shader{
         gl.deleteProgram(program);
     }
 }
-

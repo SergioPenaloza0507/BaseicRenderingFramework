@@ -1,14 +1,14 @@
 {
     "compilerOptions":{
-        "module" : "Commonjs",
         "target":"es2022",
+        "module":"es6",
         "noImplicitAny": true,
         "removeComments": true,
         "preserveConstEnums": true,
         "sourceMap":true,
-        "outDir":"dist",
-        "rootDir": "source",
-        "strict" : false,
+        "outDir":"./dist",
+        "rootDir": "./source",
+        "moduleResolution": "nodenext"
     },
     "exclude": ["node_modules", "**/*.spec.ts"]
 }

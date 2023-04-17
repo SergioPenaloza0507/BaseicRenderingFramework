@@ -43,14 +43,18 @@ export class World{
      * @returns newly registered component as Type or null if component class doesn't allow duplicates and a component of type Type is already registered under entityId
      */
     public AddEntityComponent<Type extends Component>(Type : {new(entity : number) : Type}, entityId : number) : Type{
-        if(this.GetEntityComponent<Type>(Type,entityId)){
+        if(!this.components[Type.name]){
+            this.components[Type.name] = [];
+        }
+        if(this.GetEntityComponent<Type>(Type,entityId) != null){
             if(!Type.prototype.AllowDuplicates) {
                 return null;
             }
         }
 
-        if(this.components[Type.name] == null) this.components[Type.name] = [];
-        this.components[Type.name].concat(new Type(entityId));
+        if(!this.components[Type.name]) this.components[Type.name] = [];
+        this.components[Type.name] = this.components[Type.name].concat(new Type(entityId));
+        return this.GetEntityComponent<Type>(Type, entityId);
     }
 
     public GetAllEntityComponents(entityId : number) : Component[]{
@@ -96,7 +100,7 @@ export class World{
         for(let i = 0; i < entityArray.length; i++){
             newArray[i] = entityArray[i];
         }
-        const newId : number = entityArray.length - 1;
+        const newId : number = entityArray.length <= 0? 0 : entityArray.length - 1;
         newArray[newId] = new Entity(name, newId);
         delete this.staticEntities;
         this.staticEntities = newArray;
