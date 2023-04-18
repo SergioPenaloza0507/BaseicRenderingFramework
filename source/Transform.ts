@@ -1,6 +1,6 @@
 import { vec3, quat, mat4 } from "gl-matrix";
 import { Component } from "./Component";
-import { QuaternionToEuler } from "./GeometryUtils";
+import { DEG_2_RAD, QuaternionToEuler } from "./GeometryUtils";
 
 export class Transform extends Component{
 
@@ -38,7 +38,13 @@ export class Transform extends Component{
     private UpdateMatrices() : void{
         mat4.fromRotationTranslationScale(this.objectToWorldMatrix, this.rotation, this.position, this.scale);
         mat4.invert(this.worldToObjectMatrix, this.objectToWorldMatrix);
-        console.log(`Matrices Updated!, O2W: ${this.objectToWorldMatrix}, W2O: ${this.worldToObjectMatrix}`);
+    }
+
+    public Rotate(x : number, y : number, z : number) : void {
+        this.rotation = quat.rotateX(this.rotation, this.rotation, x * DEG_2_RAD);
+        this.rotation = quat.rotateY(this.rotation, this.rotation, y * DEG_2_RAD);
+        this.rotation = quat.rotateZ(this.rotation, this.rotation, z * DEG_2_RAD);
+        this.UpdateMatrices();
     }
 //#region Properties
     public get Position() : vec3{
@@ -48,6 +54,7 @@ export class Transform extends Component{
     public set Position(newPosition : vec3){
         this.position = newPosition;
         this.dirty = true;
+        this.UpdateMatrices();
     }
 
     public get Rotation() : quat{
@@ -57,6 +64,7 @@ export class Transform extends Component{
     public set Rotation(newRotation : quat){
         this.rotation = newRotation;
         this.dirty = true;
+        this.UpdateMatrices();
     }
 
     public get Scale() : vec3{
@@ -66,6 +74,7 @@ export class Transform extends Component{
     public set Scale(newScale : vec3){
         this.scale = newScale;
         this.dirty = true;
+        this.UpdateMatrices();
     }
 
     public get ObjectToWorldMatrix() : mat4{
@@ -82,6 +91,7 @@ export class Transform extends Component{
 
     public SetEulerAngles(x : number,y : number,z : number) : void {
         this.rotation = quat.fromEuler(this.rotation, x,y,z);
+        this.UpdateMatrices();
     }
 //#endregion
 }

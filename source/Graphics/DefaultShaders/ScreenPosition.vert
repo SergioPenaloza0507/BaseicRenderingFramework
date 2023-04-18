@@ -1,9 +1,10 @@
 #version 300 es
 
-in vec4 a_position;
-out vec4 v_position;
+precision highp float;
+
+in vec2 v_position;
+out vec4 outColor;
 
 void main(){
-    gl_Position = a_position;
-    v_position = a_position;
+    outColor = vec4(v_position * 0.5 + 0.5,0,1);
 }

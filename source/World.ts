@@ -47,6 +47,7 @@ export class World{
             this.components[Type.name] = [];
         }
         if(this.GetEntityComponent<Type>(Type,entityId) != null){
+            console.log("wtf")
             if(!Type.prototype.AllowDuplicates) {
                 return null;
             }
@@ -100,7 +101,7 @@ export class World{
         for(let i = 0; i < entityArray.length; i++){
             newArray[i] = entityArray[i];
         }
-        const newId : number = entityArray.length <= 0? 0 : entityArray.length - 1;
+        const newId : number = newArray.length <= 0 ? 0 : newArray.length - 1;
         newArray[newId] = new Entity(name, newId);
         delete this.staticEntities;
         this.staticEntities = newArray;

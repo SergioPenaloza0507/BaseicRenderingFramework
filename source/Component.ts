@@ -1,5 +1,6 @@
 import { World } from "./World";
 import { Entity } from "./Entity";
+import { Transform } from "./Transform";
 
 
 export abstract class Component{
@@ -9,7 +10,10 @@ export abstract class Component{
         this.entity = entity;
     }
 
-    public abstract Initialize() : void;
+    public Initialize() : void{
+
+    }
+
     public abstract GetTypeName() : string;
 
     public Destroy() : void{
@@ -24,4 +28,7 @@ export abstract class Component{
         return World.GetCurrentWorld().GetEntity(this.entity);
     }
 
+    public get Transform() : Transform{
+        return this.Entity.GetComponent<Transform>(Transform);
+    }
 }

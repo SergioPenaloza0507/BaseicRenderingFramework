@@ -1,9 +1,13 @@
-import { vec3 } from "gl-matrix";
+import { vec3 , mat4} from "gl-matrix";
 import { World } from "./World";
 import { Entity } from "./Entity";
 import { Camera } from "./Camera";
 import { Transform } from "./Transform";
-import {Shader, ShaderSemantic} from "./Graphics/Shader";
+import {Shader} from "./Graphics/Shader";
+import { StaticMesh } from "./StaticMesh";
+import { StaticMeshRenderer } from "./Graphics/StaticMeshRenderer";
+import { Material } from "./Material";
+import { DrawRenderer } from "./Graphics/Graphics";
 
 var canvas : HTMLCanvasElement = document.querySelector("#c");
 const gl = canvas.getContext("webgl2") as WebGL2RenderingContext;
@@ -12,13 +16,22 @@ if(!gl){
     prompt("WebGL2 is not supported");
 }
 
+async function obtenerCoso(){
+    const response = await fetch("../source/Graphics/DefaultShaders/NoColor.frag");
+    const test = (await response.body.getReader().read()).value;
+    console.log(String.fromCharCode(...test));
+}
+
+obtenerCoso();
 var vertexShaderSource = `#version 300 es
 
 in vec4 a_POSITION0;
 out vec2 v_position;
+uniform mat4 _ObjectToWorldMatrix;
+uniform mat4 _ViewProjectionMatrix;
 
 void main(){
-    gl_Position = a_POSITION0;
+    gl_Position = _ViewProjectionMatrix * _ObjectToWorldMatrix * a_POSITION0;
     v_position = a_POSITION0.xy;
 }
 `;
@@ -38,53 +51,33 @@ const world : World = new World();
 
 var mainCameraEntity : Entity = Entity.Create("MainCamera");
 var cameraTransform : Transform = mainCameraEntity.AddComponent<Transform>(Transform);
-cameraTransform.Position = vec3.fromValues(0,0,-10);
+cameraTransform.Position = vec3.fromValues(0,0,-2);
+var camera : Camera = mainCameraEntity.AddComponent<Camera>(Camera);
 mainCameraEntity.AddComponent<Camera>(Camera);
-console.log(cameraTransform.Rotation);
 
+var cubeEntity : Entity = Entity.Create("Cube");
+var cubeTransform : Transform = cubeEntity.AddComponent<Transform>(Transform);
+cubeTransform.Position = vec3.fromValues(0,0,0);
 
+var cubeRenderer : StaticMeshRenderer = cubeEntity.AddComponent<StaticMeshRenderer>(StaticMeshRenderer);
+cubeRenderer.Mesh = StaticMesh.PrimitiveCuve();
 
 var shader : Shader = new Shader(vertexShaderSource, fragmentShaderSource, gl);
+cubeRenderer.Material = new Material(shader);
 
-var positionBuffer = gl.createBuffer();
-gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-var positions = [
-    -1,-1,0,
-    -1,1,0,
-    1,-1,0,
-    1,-1,0,
-    -1,1,0,
-    1,1,0
-]
+drawScene();
 
-gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+function drawScene(){
 
-var vao = gl.createVertexArray();
-gl.bindVertexArray(vao);
-if(shader.ValidateAttributeLocation(ShaderSemantic.POSITION,0))
-{
-gl.enableVertexAttribArray(shader.GetVertexAttributeLocation(ShaderSemantic.POSITION,0));
+    cubeTransform.Rotate(0 , 3, 0);
+
+    resizeCanvasToDisplaySize(canvas);
+    gl.viewport(0,0,gl.canvas.width, gl.canvas.height);
+    gl.clearColor(1,1,1,1);
+    gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+    DrawRenderer(gl, cubeRenderer, camera);
+    requestAnimationFrame(drawScene);
 }
-
-var size = 3;
-var type = gl.FLOAT;
-var normalize = false;
-var stride = 0;
-var offset = 0;
-
-gl.vertexAttribPointer(shader.GetVertexAttributeLocation(ShaderSemantic.POSITION,0), size, type, normalize, stride, offset);
-
-resizeCanvasToDisplaySize(canvas);
-gl.viewport(0,0,gl.canvas.width, gl.canvas.height);
-gl.clearColor(0,0,0,0);
-gl.clear(gl.COLOR_BUFFER_BIT);
-
-gl.useProgram(shader.shaderProgram);
-gl.bindVertexArray(vao);
-var primitiveType = gl.TRIANGLES;
-var offset = 0;
-var count = 6
-gl.drawArrays(primitiveType, offset, count);
 
 function resizeCanvasToDisplaySize(canvas:HTMLCanvasElement){
     const displayWidth = canvas.clientWidth;

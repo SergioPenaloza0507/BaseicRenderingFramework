@@ -13,7 +13,8 @@ export class Camera extends Component{
     private projectionMatrix : mat4;
     private viewMatrix       : mat4;
 
-    public Initialize(): void {
+    constructor (entityId : number){
+        super(entityId);
         this.perspective = true;
         this.aspect = 1920 / 1080;
         this.size = 5;
@@ -29,13 +30,18 @@ export class Camera extends Component{
         }
         this.viewMatrix = mat4.create();
     }
+
+    public Initialize(): void {
+        
+    }
     public GetTypeName(): string {
         return "Camera";
     }
     public get ViewMatrix() : mat4{ 
         
         const transform = this.Entity.GetComponent<Transform>(Transform);
-        mat4.fromRotationTranslationScale(this.viewMatrix,transform.Rotation, transform.Position, vec3.fromValues(1,1,1));
+        this.viewMatrix = mat4.fromRotationTranslationScale(this.viewMatrix,transform.Rotation, transform.Position, vec3.fromValues(1,1,-1));
+        this.viewMatrix = mat4.invert(this.viewMatrix,this.viewMatrix);
         return this.viewMatrix;
     }
 

@@ -1,5 +1,8 @@
 import { quat, vec3 } from "gl-matrix";
 
+export const DEG_2_RAD : number =  0.01745;
+export const RAD_2_DEG : number =  57.296;
+
 
 export function QuaternionToEuler(outVector : vec3, quaternion:quat) : vec3{
 
