@@ -8,7 +8,7 @@ enum PivotBuffer{
         UV,
         Face
 }
-export class StaticMeshObjFactory implements IAssetProcessorFactory<StaticMesh>{
+export class OBJImporter implements IAssetProcessorFactory<StaticMesh>{
     
 
     public Create(buffer : Uint8Array) : StaticMesh {

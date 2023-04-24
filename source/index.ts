@@ -9,7 +9,7 @@ import { StaticMeshRenderer } from "./Graphics/StaticMeshRenderer";
 import { Material } from "./Material";
 import { DrawRenderer } from "./Graphics/Graphics";
 import { AssetLoader } from "./AssetIO/AssetLoader";
-import { StaticMeshObjFactory } from "./AssetIO/AssetProcessors/StaticMeshOBJFactory";
+import { OBJImporter } from "./AssetIO/AssetProcessors/OBJImporter";
 
 var canvas : HTMLCanvasElement = document.querySelector("#c");
 const gl = canvas.getContext("webgl2") as WebGL2RenderingContext;
@@ -64,7 +64,7 @@ void main(){
 }
 `;
 
-const objImporter : StaticMeshObjFactory = new StaticMeshObjFactory();
+const objImporter : OBJImporter = new OBJImporter();
 AssetLoader.LoadAsset("../Assets/DefaultAssets/3D/Suzanne/Suzanne.obj", (buffer : Uint8Array) => {Main(objImporter.Create(buffer))}, console.log)
 
 function Main(mesh : StaticMesh){
