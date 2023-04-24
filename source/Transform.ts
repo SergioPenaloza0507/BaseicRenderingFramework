@@ -36,8 +36,8 @@ export class Transform extends Component{
     }
 
     private UpdateMatrices() : void{
-        mat4.fromRotationTranslationScale(this.objectToWorldMatrix, this.rotation, this.position, this.scale);
-        mat4.invert(this.worldToObjectMatrix, this.objectToWorldMatrix);
+        this.objectToWorldMatrix =  mat4.fromRotationTranslationScale(this.objectToWorldMatrix, this.rotation, this.position, this.scale);
+        this.worldToObjectMatrix =  mat4.invert(this.worldToObjectMatrix, this.objectToWorldMatrix);
     }
 
     public Rotate(x : number, y : number, z : number) : void {

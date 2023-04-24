@@ -2,8 +2,8 @@ import { World } from "./World";
 import { Entity } from "./Entity";
 import { Transform } from "./Transform";
 
-
 export abstract class Component{
+    
     public entity : number;
 
     constructor(entity : number){
